@@ -29,14 +29,13 @@ export function useMainContract() {
   }, [client]);
 
   // Open the contract
-  const mainContract = useAsyncInitialize(fetchMainContract, []);
+  const mainContract = useAsyncInitialize(fetchMainContract, [client]);
 
   // Fetch contract data periodically (polling)
   useEffect(() => {
     if (!mainContract) return;
 
     let isMounted = true;
-    console.log("Contract Mounted:", isMounted);
 
     const fetchContractData = async () => {
       try {
@@ -44,48 +43,44 @@ export function useMainContract() {
         const balance = await mainContract.getBalance();
 
         if (isMounted) {
-          setContractData({
+          setContractData((prev) => ({
+            ...prev, // Spread previous state to prevent unnecessary re-renders
             counter_value: val.number,
             recent_sender: val.recent_sender,
             owner_address: val.owner_address,
             contract_balance: fromNano(balance.balance).toString(),
-          });
-
-          console.log(contractData);
+          }));
         }
       } catch (error) {
         console.error("Error fetching contract data:", error);
       }
     };
 
-    // Fetch data immediately and then every 5 seconds
     fetchContractData();
     const interval = setInterval(fetchContractData, 5000);
 
     return () => {
       isMounted = false;
-      clearInterval(interval); // Cleanup on unmount
+      clearInterval(interval);
     };
   }, [mainContract]);
 
   return {
-    contract_address: mainContract?.address.toString() ?? null,
+    contract_address: mainContract?.address?.toString() ?? "",
     ...contractData,
-    sendIncrement: async () => {
-      if (!mainContract) return;
-      return mainContract.sendIncreament(sender, toNano("0.01"), 5);
-    },
-
-    sendDeposit: async () => {
-      return mainContract?.sendDeposit(sender, toNano("0.02"));
-    },
-
-    sendWithdrawalRequest: async () => {
-      return mainContract?.sendWithdrawalRequest(
-        sender,
-        toNano(0.005),
-        toNano("0.02")
-      );
-    },
+    sendIncrement: mainContract
+      ? async () => mainContract.sendIncreament(sender, toNano("0.01"), 5)
+      : undefined,
+    sendDeposit: mainContract
+      ? async () => mainContract.sendDeposit(sender, toNano("0.02"))
+      : undefined,
+    sendWithdrawalRequest: mainContract
+      ? async () =>
+          mainContract.sendWithdrawalRequest(
+            sender,
+            toNano(0.005),
+            toNano("0.02")
+          )
+      : undefined,
   };
 }

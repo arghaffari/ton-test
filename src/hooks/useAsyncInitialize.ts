@@ -4,11 +4,12 @@ export function useAsyncInitialize<T>(func: () => Promise<T>, deps?: any[]) {
   const [state, setState] = useState<T | undefined>(undefined);
 
   useEffect(() => {
-    let isMounted = true; // Prevent memory leak if component unmounts
+    let isMounted = true;
 
     (async () => {
       try {
         const result = await func();
+        console.log("Async Initialized Result:", result); // Debugging log
         if (isMounted) {
           setState(result);
         }
@@ -18,9 +19,9 @@ export function useAsyncInitialize<T>(func: () => Promise<T>, deps?: any[]) {
     })();
 
     return () => {
-      isMounted = false; // Cleanup function to prevent state updates on unmounted components
+      isMounted = false;
     };
-  }, deps ?? []); // Ensure deps is always an array
+  }, deps ?? []);
 
   return state;
 }

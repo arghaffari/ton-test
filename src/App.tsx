@@ -22,41 +22,45 @@ function App() {
 
   const { connected } = useTonconnect();
 
-  const [loading, setLoading] = useState(false);
+  const [loadingIncrement, setLoadingIncrement] = useState(false);
+  const [loadingDeposit, setLoadingDeposit] = useState(false);
+  const [loadingWithdrawal, setLoadingWithdrawal] = useState(false);
+
 
   const handleIncrement = async () => {
-    if (!sendIncrement || loading) return;
-    setLoading(true);
+    if (!sendIncrement || loadingIncrement) return;
+    setLoadingIncrement(true);
     try {
       await sendIncrement();
     } catch (error) {
       console.error("Increment failed:", error);
     } finally {
-      setLoading(false);
+      setLoadingIncrement(false);
     }
   };
 
+
   const handleSendDeposit = async () => {
-    if (!sendDeposit || loading) return;
-    setLoading(true);
+    if (!sendDeposit || loadingDeposit) return;
+    setLoadingDeposit(true);
     try {
       await sendDeposit();
     } catch (error) {
       console.error("sending deposit failed:", error);
     } finally {
-      setLoading(false);
+      setLoadingDeposit(false);
     }
   };
 
   const handleWithdrawalRequest = async () => {
-    if (!sendWithdrawalRequest || loading) return;
-    setLoading(true);
+    if (!sendWithdrawalRequest || loadingWithdrawal) return;
+    setLoadingWithdrawal(true);
     try {
       await sendWithdrawalRequest();
     } catch (error) {
       console.error("withdrawal failed:", error);
     } finally {
-      setLoading(false);
+      setLoadingWithdrawal(false);
     }
   };
 
@@ -81,34 +85,27 @@ function App() {
         </div>
 
         {connected && (
-          <button
-            onClick={handleIncrement}
-            disabled={!sendIncrement || loading}
-            className={loading ? "loading" : ""}
-          >
-            {loading ? "Processing..." : "Increment By 5"}
+          <button onClick={handleIncrement} disabled={!sendIncrement || loadingIncrement}>
+            {loadingIncrement ? "Processing..." : "Increment By 5"}
           </button>
+
         )}
 
         <br />
 
         {connected && (
-          <button
-            onClick={handleSendDeposit}
-            disabled={!sendDeposit || loading}
-            className={loading ? "loading" : ""}
-          >
-            {loading ? "Processing..." : "Send 0.02 Ton Deposit"}
+
+
+          <button onClick={handleSendDeposit} disabled={!sendDeposit || loadingIncrement}>
+            {loadingIncrement ? "Processing..." : "Send 0.02 Ton Deposit"}
           </button>
+
         )}
 
         {connected && (
-          <button
-            onClick={handleWithdrawalRequest}
-            disabled={!sendWithdrawalRequest || loading}
-            className={loading ? "loading" : ""}
-          >
-            {loading ? "Processing..." : "Withdraw 0.01 Ton Request"}
+
+          <button onClick={handleWithdrawalRequest} disabled={!sendWithdrawalRequest || loadingIncrement}>
+            {loadingIncrement ? "Processing..." : "Withdraw 0.01 Ton Request"}
           </button>
         )}
       </div>
