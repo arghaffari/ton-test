@@ -3,13 +3,13 @@ import { MainContract } from "../contracts/MainContract";
 import { useTonClient } from "./useTonClient";
 import { useAsyncInitialize } from "./useAsyncInitialize";
 import { Address, OpenedContract, fromNano, toNano } from "@ton/core";
-import { useTonConnect } from "./useTonconnect";
+import { useTonconnect } from "./useTonconnect";
 
 export function useMainContract() {
   const addr = "EQD7uGhe2l40Mdpk_cuwRGr0GESdJbVRIzPS5f9XrTi0cYdO";
 
   const client = useTonClient();
-  const { sender } = useTonConnect();
+  const { sender } = useTonconnect();
 
   // State for contract data
   const [contractData, setContractData] = useState<null | {

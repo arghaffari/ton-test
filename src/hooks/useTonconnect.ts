@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Sender, SenderArguments } from "@ton/core";
 import { ConnectedWallet } from "@tonconnect/ui"; // ✅ Import the correct type
 
-export const useTonConnect = (): { sender: Sender; connected: boolean } => {
+export const useTonconnect = (): { sender: Sender; connected: boolean } => {
   const [tonConnectUI] = useTonConnectUI();
   const [connected, setConnected] = useState<boolean>(tonConnectUI.connected);
 

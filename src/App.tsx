@@ -1,8 +1,9 @@
 import "./App.css";
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useMainContract } from "./hooks/useMainContract";
-import { useTonConnect } from "./hooks/useTonConnect";
+import { useTonconnect } from "./hooks/useTonconnect";
 import { useState } from "react";
+
 
 function App() {
   const {
@@ -16,7 +17,10 @@ function App() {
     sendWithdrawalRequest
   } = useMainContract();
 
-  const { connected } = useTonConnect();
+  console.log(recent_sender, owner_address);
+
+
+  const { connected } = useTonconnect();
 
   const [loading, setLoading] = useState(false);
 
