@@ -15,6 +15,7 @@
     "@ton/crypto": "^3.3.0",
     "@ton/ton": "^15.2.1",
     "@tonconnect/ui-react": "^2.0.11",
+    "@twa-dev/sdk": "^8.0.2",
     "react": "18",
     "react-dom": "18",
     "vite-plugin-node-polyfills": "^0.23.0"

@@ -4,6 +4,9 @@ import { useMainContract } from "./hooks/useMainContract";
 import { useTonconnect } from "./hooks/useTonconnect";
 import { useState } from "react";
 
+import WebApp from "@twa-dev/sdk";
+
+
 
 function App() {
   const {
@@ -21,6 +24,10 @@ function App() {
 
 
   const { connected } = useTonconnect();
+
+  const showAlert = () => {
+    WebApp.showAlert("Hey There!")
+  }
 
   const [loadingIncrement, setLoadingIncrement] = useState(false);
   const [loadingDeposit, setLoadingDeposit] = useState(false);
@@ -71,6 +78,9 @@ function App() {
       </div>
       <div>
         <div className="Card">
+          <br />
+          <b>Platform: {WebApp.platform}</b>
+          <br />
           <b>Our contract Address</b>
           <div className="Hint">
             {contract_address ? contract_address.slice(0, 30) + "..." : "Loading..."}
@@ -83,6 +93,12 @@ function App() {
           <b>Counter Value</b>
           <div>{counter_value ?? "Loading..."}</div>
         </div>
+
+        <button
+          onClick={showAlert}
+        >
+          Show Alert
+        </button>
 
         {connected && (
           <button onClick={handleIncrement} disabled={!sendIncrement || loadingIncrement}>
